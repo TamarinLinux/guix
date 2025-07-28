@@ -1079,7 +1079,7 @@ PipeWire in Qt projects.")
 (define-public kscreen
   (package
     (name "kscreen")
-    (version "6.3.6")
+    (version "6.4.3")
     (source (origin
               (method url-fetch)
               (uri (string-append "mirror://kde/stable/plasma/"
@@ -1087,12 +1087,15 @@ PipeWire in Qt projects.")
                                   ".tar.xz"))
               (sha256
                (base32
-                "13aibq9zdfk8msnv05f9ny6zlf0hxm9lvl5612csx6gig7p9nwy1"))))
+                "1ab0z87312vb25acin4w273q1pi5yppzlhgbxk7r6qhkl8r71vrp"))))
     (build-system cmake-build-system)
     (arguments
      ;; TODO: All tests fail
      (list #:tests? #f))
-    (native-inputs (list extra-cmake-modules qttools pkg-config))
+    (native-inputs (list extra-cmake-modules qttools pkg-config
+                         wayland
+                         wayland-protocols
+                         qtwayland))
     (inputs (list kconfig
                   kdbusaddons
                   kdeclarative
@@ -1101,6 +1104,7 @@ PipeWire in Qt projects.")
                   kwindowsystem
                   kiconthemes
                   kcoreaddons
+                  kcrash
                   kcmutils
                   kxmlgui
                   layer-shell-qt
@@ -1111,6 +1115,7 @@ PipeWire in Qt projects.")
                   plasma-wayland-protocols
                   qtsensors
                   qtbase
+                  qtwayland
                   xcb-util
                   libplasma))
     (home-page "https://invent.kde.org/plasma/kscreen")
