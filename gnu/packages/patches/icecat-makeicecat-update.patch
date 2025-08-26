@@ -1,0 +1,409 @@
+Upstream-status: https://debbugs.gnu.org/cgi/bugreport.cgi?bug=79355
+
+diff --git a/data/branding/icecat/configure.sh b/data/branding/icecat/configure.sh
+index 7481c2c..edcf9a8 100644
+--- a/data/branding/icecat/configure.sh
++++ b/data/branding/icecat/configure.sh
+@@ -2,4 +2,4 @@
+ # License, v. 2.0. If a copy of the MPL was not distributed with this
+ # file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ 
+-MOZ_APP_DISPLAYNAME=IceCat
++MOZ_APP_DISPLAYNAME=GNU IceCat
+diff --git a/data/patches/hide-firefox-view-button.patch b/data/patches/hide-firefox-view-button.patch
+index ef24a34..52bad1c 100644
+--- a/data/patches/hide-firefox-view-button.patch
++++ b/data/patches/hide-firefox-view-button.patch
+@@ -1,10 +1,10 @@
+---- a/browser/base/content/navigator-toolbox.inc.xhtml
+-+++ b/browser/base/content/navigator-toolbox.inc.xhtml
+-@@ -43,6 +43,7 @@
+-                          oncommand="FirefoxViewHandler.openTab();"
+-                          onmousedown="FirefoxViewHandler.openToolbarMouseEvent(event);"
+-                          cui-areatype="toolbar"
+-+                         hidden="true"
+-                          removable="true"/>
++--- a/browser/base/content/navigator-toolbox.inc.xhtml	2025-08-12 02:31:44.000000000 +0900
+++++ b/browser/base/content/navigator-toolbox.inc.xhtml	2025-08-26 21:10:15.709368257 +0900
++@@ -41,6 +41,7 @@
++                        role="button"
++                        aria-pressed="false"
++                        cui-areatype="toolbar"
+++                       hidden="true"
++                        removable="true"/>
+  
+-           <tabs id="tabbrowser-tabs"
++         <tabs id="tabbrowser-tabs"
+diff --git a/data/patches/hide-submit-feedback-menu-item.patch b/data/patches/hide-submit-feedback-menu-item.patch
+index 402ba31..5278da7 100644
+--- a/data/patches/hide-submit-feedback-menu-item.patch
++++ b/data/patches/hide-submit-feedback-menu-item.patch
+@@ -1,10 +1,10 @@
+---- a/browser/base/content/browser-menubar.inc
+-+++ b/browser/base/content/browser-menubar.inc
+-@@ -465,6 +465,7 @@
+-                           hidden="true"
+-                           appmenu-data-l10n-id="menu-report-broken-site"/>
++--- a/browser/base/content/browser-menubar.inc	2025-08-26 21:16:57.929903122 +0900
+++++ b/browser/base/content/browser-menubar.inc	2025-08-26 21:17:09.257918204 +0900
++@@ -431,6 +431,7 @@
++                           disabled="true"
++                           appmenu-data-l10n-id="appmenuitem-report-broken-site"/>
+                  <menuitem id="feedbackPage"
+ +                          hidden="true"
+-                           oncommand="openFeedbackPage()"
+                            data-l10n-id="menu-help-share-ideas"
+                            appmenu-data-l10n-id="appmenu-help-share-ideas"/>
++                 <menuitem id="helpSafeMode"
+diff --git a/data/patches/icecat-about-dialog.patch b/data/patches/icecat-about-dialog.patch
+index c7e77b0..87dc835 100644
+--- a/data/patches/icecat-about-dialog.patch
++++ b/data/patches/icecat-about-dialog.patch
+@@ -1,16 +1,16 @@
+---- a/browser/base/content/aboutDialog.xhtml
+-+++ b/browser/base/content/aboutDialog.xhtml
+-@@ -148,7 +148,6 @@
++--- a/browser/base/content/aboutDialog.xhtml	2025-08-26 21:23:08.866394736 +0900
+++++ b/browser/base/content/aboutDialog.xhtml	2025-08-26 21:23:19.986408921 +0900
++@@ -139,7 +139,6 @@
+        <hbox pack="center">
+          <label is="text-link" class="bottom-link" useoriginprincipal="true" href="about:license" data-l10n-id="bottomLinks-license"/>
+-         <label is="text-link" class="bottom-link" useoriginprincipal="true" href="about:rights" data-l10n-id="bottomLinks-rights"/>
+--        <label is="text-link" class="bottom-link" href="https://www.mozilla.org/privacy/?utm_source=firefox-browser&#38;utm_medium=firefox-desktop&#38;utm_campaign=about-dialog" data-l10n-id="bottomLinks-privacy"/>
++         <label is="text-link" class="bottom-link" href="https://www.mozilla.org/about/legal/terms/firefox/" data-l10n-id="bottom-links-terms"/>
++-        <label is="text-link" class="bottom-link" href="https://www.mozilla.org/privacy/firefox/?utm_source=firefox-browser&#38;utm_medium=firefox-desktop&#38;utm_campaign=about-dialog" data-l10n-id="bottom-links-privacy"/>
+        </hbox>
+        <description id="trademark" data-l10n-id="trademarkInfo"></description>
+      </vbox>
+---- a/browser/base/content/aboutDialog.css
+-+++ b/browser/base/content/aboutDialog.css
+-@@ -38,10 +38,9 @@
++--- a/browser/base/content/aboutDialog.css	2025-08-26 21:26:43.618669160 +0900
+++++ b/browser/base/content/aboutDialog.css	2025-08-26 21:31:54.207067616 +0900
++@@ -32,10 +32,9 @@
+  #rightBox {
+    background-image: url("chrome://branding/content/about-wordmark.svg");
+    background-repeat: no-repeat;
+@@ -19,6 +19,9 @@
+    padding-top: 38px;
+ -  margin-top: 20px;
+ +  margin-top: 60px;
+- }
+- 
++   /* We don't want this box to contribute arbitrarily to the intrinsic size of
++    * the dialog, so set the width to a reasonable size, but let it flex to take
++    * all available space. */
++--- a/browser/base/content/aboutDialog.css
+++++ b/browser/base/content/aboutDialog.css
+  #rightBox:-moz-locale-dir(rtl) {
+diff --git a/data/patches/icecat-fix-install.patch b/data/patches/icecat-fix-install.patch
+new file mode 100644
+index 0000000..b62d36f
+--- /dev/null
++++ b/data/patches/icecat-fix-install.patch
+@@ -0,0 +1,14 @@
++diff --git a/browser/installer/package-manifest.in b/browser/installer/package-manifest.in
++index 6ebf2f62c477..2ddcef37816c 100644
++--- a/browser/installer/package-manifest.in
+++++ b/browser/installer/package-manifest.in
++@@ -174,7 +174,9 @@
++ @RESPATH@/components/nsUpdateService.manifest
++ #endif
++ @RESPATH@/components/ProcessSingleton.manifest
+++#ifdef MOZ_SERVICES_SYNC
++ @RESPATH@/components/SyncComponents.manifest
+++#endif
++ @RESPATH@/components/servicesComponents.manifest
++ @RESPATH@/components/servicesSettings.manifest
++ @RESPATH@/components/cryptoComponents.manifest
+diff --git a/data/patches/moz-configure-changes.patch b/data/patches/moz-configure-changes.patch
+index 6f0525e..5745b38 100644
+--- a/data/patches/moz-configure-changes.patch
++++ b/data/patches/moz-configure-changes.patch
+@@ -1,18 +1,41 @@
++diff --git a/browser/moz.configure b/browser/moz.configure
++index e8b401a7dfb2..d5b3117ce3d8 100644
+ --- a/browser/moz.configure
+ +++ b/browser/moz.configure
+-@@ -5,11 +5,11 @@
++@@ -5,16 +5,17 @@
+  # file, You can obtain one at http://mozilla.org/MPL/2.0/.
+  
+  imply_option("MOZ_PLACES", True)
+ -imply_option("MOZ_SERVICES_HEALTHREPORT", True)
+-+imply_option("MOZ_SERVICES_HEALTHREPORT", False)
+- imply_option("MOZ_SERVICES_SYNC", True)
++-imply_option("MOZ_SERVICES_SYNC", True)
+ -imply_option("MOZ_DEDICATED_PROFILES", True)
+ -imply_option("MOZ_BLOCK_PROFILE_DOWNGRADE", True)
+ -imply_option("MOZ_NORMANDY", True)
+++imply_option("MOZ_SERVICES_HEALTHREPORT", False)
+++imply_option("MOZ_SERVICES_SYNC", False)
+ +imply_option("MOZ_DEDICATED_PROFILES", False)
+ +imply_option("MOZ_BLOCK_PROFILE_DOWNGRADE", False)
+ +imply_option("MOZ_NORMANDY", False)
++ imply_option("MOZ_PROFILE_MIGRATOR", True)
++ 
++ 
++-imply_option("MOZ_APP_VENDOR", "Mozilla")
+++imply_option("MOZ_APP_VENDOR", "GNU")
++ imply_option("MOZ_APP_ID", "{ec8030f7-c20a-464f-9b0e-13a3a9e97384}")
+++imply_option("MOZ_APP_PROFILE", "mozilla/icecat")
++ # Include the DevTools client, not just the server (which is the default)
++ imply_option("MOZ_DEVTOOLS", "all")
++ imply_option("BROWSER_CHROME_URL", "chrome://browser/content/browser.xhtml")
++diff --git a/build/moz.configure/init.configure b/build/moz.configure/init.configure
++index 193272588caa..da8a729548c8 100644
++--- a/build/moz.configure/init.configure
+++++ b/build/moz.configure/init.configure
++@@ -991,7 +991,7 @@ set_config("MOZ_BUILD_APP", build_project)
++ set_define("MOZ_BUILD_APP", build_project)
++ 
++ 
++-option(env="MOZILLA_OFFICIAL", help="Build an official release")
+++option(env="MOZILLA_OFFICIAL", help="Build an official release", default=False)
++ 
+  
+- with only_when(target_has_linux_kernel & compile_environment):
+-     option(env="MOZ_NO_PIE_COMPAT", help="Enable non-PIE wrapper")
++ @depends("MOZILLA_OFFICIAL")
+diff --git a/makeicecat b/makeicecat
+index fc0bb76..f47f089 100755
+--- a/makeicecat
++++ b/makeicecat
+@@ -21,12 +21,13 @@
+ 
+ 
+ # metadata
+-readonly FFMAJOR=128
+-readonly FFMINOR=14
++readonly FFMAJOR=140
++readonly FFMINOR=2
+ readonly FFSUB=0
+ readonly FFBUILD=1
+ readonly GNUVERSION=1
+-readonly SOURCEBALL_CHECKSUM='93b9ef6229f41cb22ff109b95bbf61a78395a0fe4b870192eeca22947cb09a53'
++# SHA-256
++readonly SOURCEBALL_CHECKSUM='956dce675c3b706d563caf07ed3ca9af632ab830be710dfd4351da78a0a2ef55'
+ readonly SOURCEBALL_SIGNINGKEY='14F26682D0916CDD81E37B6D61B7B526D98F0353'
+ readonly FFVERSION=${FFMAJOR}.${FFMINOR}.${FFSUB}
+ readonly SOURCEBALL=firefox-${FFVERSION}esr.source.tar.xz
+@@ -41,7 +42,7 @@ readonly LIST_URL=lists.gnu.org/mailman/listinfo/bug-gnuzilla
+ 
+ # l10n
+ readonly L10N_URL=https://github.com/mozilla-l10n/firefox-l10n
+-readonly L10N_REV=fcd0300e8478d1ec4d1c097a073ddb8e1e0351e3
++readonly L10N_REV=4846304555affc92db4c693149c0f1c59afc7828
+ readonly L10N_CMP_URL=https://github.com/mozilla/compare-locales
+ readonly L10N_CMP_REV=RELEASE_9_0_4
+ readonly L10N_PREFS_DIR=browser/chrome/browser/preferences
+@@ -377,7 +378,7 @@ configure()
+     sed '/"datareporting\.healthreport\.uploadEnabled"/s/true/false/' -i modules/libpref/init/all.js
+ 
+     # Custom privacy statement link
+-    sed "s|https://www\\.mozilla\\.org/legal/privacy/|https://${LEGALINFO_URL}|" -i ./browser/app/profile/firefox.js ./toolkit/content/aboutRights.xhtml
++    sed "s|https://www\\.mozilla\\.org/legal/privacy/|https://${LEGALINFO_URL}|" -i ./browser/app/profile/firefox.js
+ 
+     # Sanitize lists
+     local plugin_file
+@@ -393,8 +394,8 @@ configure()
+     # Disable activity-stream anti-features.
+     # These are not condensed into a single sed script so that it
+     # fails on individual commands that didn't change the source
+-    local activity_stream=browser/components/newtab/lib/ActivityStream.sys.mjs
+-    sed '/^const DEFAULT_SITES/,/^])\;/c const DEFAULT_SITES = new Map\([[""]]\);' -i browser/components/newtab/lib/DefaultSites.sys.mjs
++    local activity_stream=browser/extensions/newtab/lib/ActivityStream.sys.mjs
++    sed '/^const DEFAULT_SITES/,/^])\;/c const DEFAULT_SITES = new Map\([[""]]\);' -i browser/extensions/newtab/lib/DefaultSites.sys.mjs
+     sed '/"showSponsored"/,/value/s/value: true/value: false/' -i $activity_stream
+     sed '/  "telemetry"/,/value/s/value: true/value: false/' -i $activity_stream
+     sed '/"section\.highlights\.includePocket"/,/value/s/value: true/value: false/' -i $activity_stream
+@@ -405,11 +406,10 @@ configure()
+     sed '/"telemetry\.structuredIngestion\.endpoint"/,/value/s/value: .*/value: "",/' -i $activity_stream
+     sed '/name: "telemetry"/,/value/s/value: true/value: false/' -i $activity_stream
+     sed '/name: "system\.topstories"/,/},/s/.*!!locales.*/false/' -i $activity_stream
+-    sed 's/Ubuntu, //' -i browser/components/newtab/css/activity-stream*.css
+ 
+-    sed '/^]$/d' -i browser/components/newtab/data/content/tippytop/top_sites.json
+-    sed 's/}$/},/' -i browser/components/newtab/data/content/tippytop/top_sites.json
+-    cat << EOF >> browser/components/newtab/data/content/tippytop/top_sites.json
++    sed '/^]$/d' -i browser/components/topsites/content/tippytop/top_sites.json
++    sed 's/}$/},/' -i browser/components/topsites/content/tippytop/top_sites.json
++    cat << EOF >> browser/components/topsites/content/tippytop/top_sites.json
+ {
+   "domains": ["gnu.org"],
+   "image_url": "images/gnu.png",
+@@ -505,8 +505,8 @@ EOF
+ }
+ EOF
+ 
+-    cp "${DATADIR}"/newtab/*.ico browser/components/newtab/data/content/tippytop/favicons/
+-    cp "${DATADIR}"/newtab/*.png browser/components/newtab/data/content/tippytop/images/
++    cp "${DATADIR}"/newtab/*.ico browser/components/topsites/content/tippytop/favicons/
++    cp "${DATADIR}"/newtab/*.png browser/components/topsites/content/tippytop/images/
+ 
+     # IceCat menu l10n
+     /bin/sed '/appmenuitem-settings/,+1s/\(.*.label = \)\(.*\)/\1\2\nappmenuitem-icecat-settings =\n\1IceCat \2/' -i ./l10n/*/browser/browser/appmenu.ftl ./browser/locales/en-US/browser/appmenu.ftl
+@@ -541,7 +541,6 @@ configure_mobile()
+ 
+     cat << EOF >> mobile/android/confvars.sh
+ # IceCat settings
+-MOZ_APP_VENDOR=GNU
+ MOZ_APP_VERSION=${FFVERSION}
+ MOZ_PAY=0
+ MOZ_SERVICES_HEALTHREPORT=0
+@@ -606,15 +605,6 @@ apply_branding()
+ 
+     # Custom legal about pages
+     find l10n -wholename '*/brand.ftl' | xargs /bin/sed 's/^trademarkInfo = .*/trademarkInfo = The IceCat logo is Copyright 2008-2015 Free Software Foundation, released under the terms of the GNU Lesser General Public License, version 3 or any later version./' -i
+-    local string
+-    for string in rights-intro-point-2 rights-intro-point-3 rights-intro-point-4 rights-intro-point-5 rights-intro-point-6 rights-webservices rights-safebrowsing
+-    do
+-        find -name aboutRights.ftl | xargs sed -i "s/^${string}.*/${string} = /"
+-    done
+-    for string in helpus community-2 community-exp
+-    do
+-        find -wholename '*/browser/aboutDialog.ftl' | xargs sed -i "s/^${string}.*/${string} = /"
+-    done
+     cp "${DATADIR}"/aboutRights.xhtml toolkit/content/aboutRights.xhtml
+     cp "${DATADIR}"/aboutRights.xhtml toolkit/content/aboutRights-unbranded.xhtml
+     sed -i 's|<a href="http://www\.mozilla\.org/">Mozilla Project</a>|<a href="http://www.gnu.org/">GNU Project</a>|g' browser/base/content/overrides/app-license.html
+@@ -632,8 +622,10 @@ apply_branding()
+ 
+ apply_batch_branding()
+ {
+-    find . -depth | grep -i fennec  | rename_files -e s/fennec/icecatmobile/g -e s/Fennec/IceCatMobile/g
+-    find . -depth | grep -i firefox | rename_files -e s/firefox/icecat/g -e s/Firefox/IceCat/g
++    find . -depth | grep -i fennec |
++        rename_files -e s/fennec/icecatmobile/g -e s/Fennec/IceCatMobile/g
++    find . -depth | grep -i firefox |
++        rename_files -e s/firefox/icecat/g -e s/Firefox/IceCat/g
+ 
+     echo "Running batch rebranding (this will take a while)"
+     local sed_script="
+@@ -672,7 +664,9 @@ s|https://www\\.mozilla\\.org/icecat/?utm_source=synceol|https://www.mozilla.org
+ 
+ s|www\\.gnu\\.org/software/gnuzilla/icecat-help|libreplanet.org/wiki/Group:IceCat/Help|g;
+ "
+-    find . -type f -not -iregex '.*changelog.*' -not -iregex '.*copyright.*' -not -iregex '.*third_party/rust.*' -execdir /bin/sed --follow-symlinks -i "${sed_script}" '{}' ';'
++    find . -type f -not -iregex '.*changelog.*' -not -iregex '.*copyright.*' \
++         -not -iregex '.*third_party/rust.*' \
++         -execdir /bin/sed --follow-symlinks -i "${sed_script}" '{}' ';'
+ 
+     find l10n -type f -execdir /bin/sed --follow-symlinks -i "s/from GNU/from Mozilla/g" '{}' ';'
+ 
+@@ -713,27 +707,18 @@ s/OpenSource/Free Software/g;
+     # Ditto for browser/modules/moz.build
+     sort_inner_list_in_file "EXTRA_JS_MODULES += [" "]" browser/modules/moz.build
+ 
++    # Adjust the capitalization of IceCat to match the expected symbol
++    # names in build-time generated source files like TelemetryEventEnums.h.
++    sed 's/IceCatview/Icecatview/g' -i browser/components/icecatview/metrics.yaml
++
+     # Copy js settings
+     cat "${DATADIR}"/settings.js >> browser/app/profile/icecat.js
+ 
+     cat << EOF >> browser/confvars.sh
+ # IceCat settings
+ MOZ_APP_BASENAME=IceCat
+-MOZ_APP_UA_NAME=Firefox
+-MOZ_APP_VENDOR=GNU
+ MOZ_APP_VERSION=${FFVERSION}
+-MOZ_APP_PROFILE=mozilla/icecat
+-MOZ_PAY=0
+-MOZ_SERVICES_HEALTHREPORT=0
+-MOZ_SERVICES_HEALTHREPORTER=0
+-MOZ_SERVICES_FXACCOUNTS=0
+-MOZ_SERVICES_METRICS=0
+ MOZ_DATA_REPORTING=0
+-MOZ_NORMANDY=0
+-MOZ_SERVICES_SYNC=0
+-MOZ_DEVICES=0
+-MOZ_ANDROID_GOOGLE_PLAY_SERVICES=0
+-MOZ_ADDON_SIGNING=0
+ EOF
+ }
+ 
+diff --git a/tools/process-json-files.py b/tools/process-json-files.py
+index d449057..2407fa9 100644
+--- a/tools/process-json-files.py
++++ b/tools/process-json-files.py
+@@ -148,48 +148,6 @@ class Changes(RemoteSettings):
+         return File(cls.OUTPUT_PATH, changes)
+ 
+ 
+-class SearchConfig(RemoteSettings):
+-    JSON_PATHS = (
+-        RemoteSettings.DUMPS_PATH_ABSOLUTE /
+-        'main/search-config.json',
+-    )
+-    SCHEMA_PATH = arguments.MAIN_PATH / \
+-        'toolkit/components/search/schema/search-config-schema.json'
+-    OUTPUT_PATH = JSON_PATHS[0]
+-
+-    _DUCKDUCKGO_SEARCH_ENGINE_ID = 'ddg@search.mozilla.org'
+-
+-    @classmethod
+-    def should_drop_record(cls, search_engine):
+-        return search_engine['webExtension']['id'] not in (
+-            cls._DUCKDUCKGO_SEARCH_ENGINE_ID, 'wikipedia@search.mozilla.org')
+-
+-    @classmethod
+-    def process_record(cls, search_engine):
+-        [search_engine.pop(key, None)
+-         for key in ['extraParams', 'telemetryId']]
+-
+-        general_specifier = {}
+-        for specifier in search_engine['appliesTo'].copy():
+-            if 'application' in specifier:
+-                if 'distributions' in specifier['application']:
+-                    search_engine['appliesTo'].remove(specifier)
+-                    continue
+-                specifier['application'].pop('extraParams', None)
+-
+-            if 'included' in specifier and 'everywhere' in specifier[
+-                    'included'] and specifier['included']['everywhere']:
+-                general_specifier = specifier
+-
+-        if not general_specifier:
+-            general_specifier = {'included': {'everywhere': True}}
+-            search_engine['appliesTo'].insert(0, general_specifier)
+-        if search_engine['webExtension']['id'] == cls._DUCKDUCKGO_SEARCH_ENGINE_ID:
+-            general_specifier['default'] = 'yes'
+-
+-        return search_engine
+-
+-
+ class SearchConfigV2(RemoteSettings):
+     JSON_PATHS = (
+         RemoteSettings.DUMPS_PATH_ABSOLUTE /
+@@ -224,20 +182,6 @@ class SearchConfigV2(RemoteSettings):
+         return record
+ 
+ 
+-class SearchConfigOverrides(RemoteSettings):
+-    JSON_PATHS = (
+-        RemoteSettings.DUMPS_PATH_ABSOLUTE /
+-        'main/search-config-overrides.json',
+-    )
+-    SCHEMA_PATH = arguments.MAIN_PATH / \
+-        'toolkit/components/search/schema/search-config-overrides-schema.json'
+-    OUTPUT_PATH = JSON_PATHS[0]
+-
+-    @classmethod
+-    def should_drop_record(cls, record):
+-        return True
+-
+-
+ class SearchConfigOverridesV2(RemoteSettings):
+     JSON_PATHS = (
+         RemoteSettings.DUMPS_PATH_ABSOLUTE /
+@@ -295,8 +239,7 @@ class TopSites(RemoteSettings):
+ 
+ # To reflect the latest timestamps, Changes class should always come after
+ # all other RemoteSettings subclasses
+-processors = (SearchConfig,   SearchConfigOverrides,
+-              SearchConfigV2, SearchConfigOverridesV2,
++processors = (SearchConfigV2, SearchConfigOverridesV2,
+               Changes)
+ 
+ for processor in processors:
